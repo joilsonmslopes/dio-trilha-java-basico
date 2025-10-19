@@ -13,6 +13,5 @@ Simulação de um **banco digital** em Java, com operações de **depósito**, *
 - `withdraw` (sacar)
 - `transfer` (transferir entre contas)
 - `getStatement` (exibir extrato com histórico)
-- Controle de data/hora com `LocalDateTime` nos lançamentos
 
 ---
