@@ -7,5 +7,5 @@ public interface IAccount {
     void deposit(double amount);
     void withdraw(double amount);
     void transfer(Account toAccount, double amount);
-    String getStatement();
+    void getStatement();
 }
