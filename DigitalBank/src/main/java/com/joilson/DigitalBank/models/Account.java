@@ -4,6 +4,7 @@ import com.joilson.DigitalBank.interfaces.MovementType;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,44 +17,46 @@ public abstract class Account implements IAccount {
     private final Client client;
     private final int accountNumber;
     private final int agencyNumber;
-    private double balance;
+    private BigDecimal balance;
     private final List<Movement> movements;
 
     public Account(Client client) {
         this.client = client;
         this.accountNumber = SEQUENTIAL++;
         this.agencyNumber = AGENCY_NUMBER;
-        this.balance = 0;
+        this.balance = BigDecimal.valueOf(0);
         this.movements = new ArrayList<>();
     }
 
     @Override
-    public void deposit(double amount) {
-        if (amount < 0) {
+    public void deposit(BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Não pode depositar um valor negativo.");
         }
 
-        this.balance += amount;
+        BigDecimal result = this.balance.add(amount);
         movements.add(new Movement(MovementType.DEPOSIT, amount, null));
+        this.balance = result;
     }
 
     @Override
-    public void withdraw(double amount) {
-        if (amount < 0) {
+    public void withdraw(BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Não pode sacar um valor negativo.");
         }
 
-        if (this.balance - amount < 0) {
+        if (this.balance.subtract(amount).compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Saldo insuficiente.");
         }
 
-        this.balance -= amount;
+        BigDecimal result = this.balance.subtract(amount);
         movements.add(new Movement(MovementType.WITHDRAW, amount, null));
+        this.balance = result;
     }
 
     @Override
-    public void transfer(Account toAccount, double amount) {
-        if (amount < 0) {
+    public void transfer(Account toAccount, BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Não pode transferir um valor negativo.");
         }
 

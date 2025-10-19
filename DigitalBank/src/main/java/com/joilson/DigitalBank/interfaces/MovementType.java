@@ -12,4 +12,9 @@ public enum MovementType {
     MovementType(String label) {
         this.label = label;
     }
+
+    @Override
+    public String toString() {
+        return label;
+    }
 }
